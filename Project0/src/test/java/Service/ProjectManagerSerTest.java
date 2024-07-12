@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.sql.Date;
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -74,6 +75,16 @@ class ProjectManagerSerTest {
     }
 
     @Test
+    void testRemoveUserFromProject() throws SQLException {
+        when(projectDAO.removeUserFromProject(1, 2)).thenReturn(true);
+
+        boolean result = projectManagerSer.removeUserFromProject(1, 2);
+
+        assertTrue(result);
+        verify(projectDAO, times(1)).removeUserFromProject(1, 2);
+    }
+
+    @Test
     void testAssignTask() throws SQLException {
         Task task = new Task();
         when(taskDAO.createTask(task)).thenReturn(true);
@@ -82,6 +93,16 @@ class ProjectManagerSerTest {
 
         assertTrue(result);
         verify(taskDAO, times(1)).createTask(task);
+    }
+
+    @Test
+    void testUpdateTaskStatusAndTimeline() throws SQLException {
+        when(taskDAO.updateTaskStatusAndTimeline(1, "Completed", "Finished the task", Date.valueOf("2024-07-09"), Date.valueOf("2024-07-20"))).thenReturn(true);
+
+        boolean result = projectManagerSer.updateTaskStatusAndTimeline(1, "Completed", "Finished the task", Date.valueOf("2024-07-09"), Date.valueOf("2024-07-20"));
+
+        assertTrue(result);
+        verify(taskDAO, times(1)).updateTaskStatusAndTimeline(1, "Completed", "Finished the task", Date.valueOf("2024-07-09"), Date.valueOf("2024-07-20"));
     }
 
     @Test

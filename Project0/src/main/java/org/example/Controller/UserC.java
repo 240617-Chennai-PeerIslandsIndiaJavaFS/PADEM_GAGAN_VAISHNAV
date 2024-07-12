@@ -22,11 +22,10 @@ public class UserC {
         admin_controller = new AdminC(user_service);
         ProjectDAO projectDAO = new ProjectDAO();
         TaskDAO taskDAO = new TaskDAO();
-        MilestoneDAO milestonedao=new MilestoneDAO();
-        ActivityLogDAO activitylogdao=new ActivityLogDAO();
-        TaskUpdateDAO taskupdatedao=new TaskUpdateDAO();
-        project_manager_controller = new ProjectManagerC(new ProjectManagerSer(projectDAO, taskDAO, milestonedao,activitylogdao));
-        team_member_controller = new TeamMemberC(new TeamMemberSer(projectDAO, taskDAO,taskupdatedao));
+        MilestoneDAO milestoneDAO = new MilestoneDAO();
+        ActivityLogDAO activityLogDAO = new ActivityLogDAO();
+        project_manager_controller = new ProjectManagerC(new ProjectManagerSer(projectDAO, taskDAO, milestoneDAO, activityLogDAO));
+        team_member_controller = new TeamMemberC(new TeamMemberSer(projectDAO, taskDAO, new TaskUpdateDAO()));
     }
 
     public void loginUser() throws SQLException {

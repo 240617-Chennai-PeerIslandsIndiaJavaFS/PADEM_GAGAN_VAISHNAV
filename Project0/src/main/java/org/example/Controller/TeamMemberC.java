@@ -21,7 +21,7 @@ public class TeamMemberC {
         int choice;
         while (true) {
             System.out.println("---------------------------------------------------------------------------------------------------------------------------------");
-            System.out.println("1) View Project Details  ||  2) View My Tasks  ||  3) Update Task Status  ||  4) Logout ");
+            System.out.println("1) View Project Details  ||  2) View My Tasks  ||  3) Update Task Status  ||  5)Logout ");
             System.out.println("---------------------------------------------------------------------------------------------------------------------------------");
             System.out.print("Enter Your Option : ");
             choice = sc.nextInt();
@@ -97,4 +97,5 @@ public class TeamMemberC {
             System.out.println("Failed to Update Task Status");
         }
     }
+
 }

@@ -35,8 +35,11 @@ public class TeamMemberSer {
         taskUpdate.setTask_id(taskId);
         taskUpdate.setStatus(status);
         taskUpdate.setProgress_description(progressDescription);
-        taskUpdate.setUpdated_at(new Timestamp(System.currentTimeMillis()));
 
-        return task_update_dao.createTaskUpdate(taskUpdate) && task_dao.updateTaskStatus(taskId, status, progressDescription);
+        boolean updateStatus = task_update_dao.createTaskUpdate(taskUpdate);
+        if (updateStatus) {
+            return task_dao.updateTaskStatus(taskId, status, progressDescription);
+        }
+        return false;
     }
 }

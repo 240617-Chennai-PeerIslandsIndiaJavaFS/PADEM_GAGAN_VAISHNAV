@@ -1,4 +1,5 @@
 package DAO;
+
 import org.example.Connection.DBConn;
 import org.example.DAO.ProjectDAO;
 import org.example.Models.Project;
@@ -20,18 +21,10 @@ class ProjectDAOTest {
     void setUp() throws SQLException {
         JdbcConnectionPool cp = JdbcConnectionPool.create("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;", "sa", "");
         connection = cp.getConnection();
-        DBConn.setConnection(connection);  // Set the connection for testing
+        DBConn.setConnection(connection);
         projectDAO = new ProjectDAO();
-
-        // Create table and insert test data
-        connection.createStatement().execute("CREATE TABLE projects (" +
-                "project_id INT PRIMARY KEY, " +
-                "project_name VARCHAR(100), " +
-                "description TEXT, " +
-                "client_name VARCHAR(100), " +
-                "start_date DATE, " +
-                "end_date DATE)");
         connection.createStatement().execute("INSERT INTO projects (project_id, project_name) VALUES (1, 'Test Project')");
+        connection.createStatement().execute("INSERT INTO user_project_roles (user_id, project_id) VALUES (1, 1)");
     }
 
     @Test
@@ -58,19 +51,20 @@ class ProjectDAOTest {
 
     @Test
     void testAddUserToProject() throws SQLException {
-        connection.createStatement().execute("CREATE TABLE user_project_roles (" +
-                "user_project_role_id INT PRIMARY KEY AUTO_INCREMENT, " +
-                "user_id INT, " +
-                "project_id INT)");
-
         boolean result = projectDAO.addUserToProject(1, 2);
 
         assertTrue(result);
     }
 
     @Test
+    void testRemoveUserFromProject() throws SQLException {
+        boolean result = projectDAO.removeUserFromProject(1, 1);
+
+        assertTrue(result);
+    }
+
+    @Test
     void testResetPassword() throws SQLException {
-        connection.createStatement().execute("CREATE TABLE users (email VARCHAR(100), password_hash VARCHAR(255))");
         connection.createStatement().execute("INSERT INTO users (email, password_hash) VALUES ('test@example.com', 'oldpassword')");
 
         boolean result = projectDAO.resetPassword("test@example.com", "newpassword");

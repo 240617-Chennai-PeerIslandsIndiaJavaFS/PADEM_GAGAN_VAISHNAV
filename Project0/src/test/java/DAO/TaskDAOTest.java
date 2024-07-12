@@ -1,4 +1,5 @@
 package DAO;
+
 import org.example.Connection.DBConn;
 import org.example.DAO.TaskDAO;
 import org.example.Models.Task;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -32,9 +34,10 @@ class TaskDAOTest {
                 "title VARCHAR(100), " +
                 "description TEXT, " +
                 "status VARCHAR(50), " +
+                "progress_description TEXT, " +
                 "start_date DATE, " +
                 "end_date DATE)");
-        connection.createStatement().execute("INSERT INTO tasks (task_id, title, assigned_to) VALUES (1, 'Test Task', 1)");
+        connection.createStatement().execute("INSERT INTO tasks (task_id, title, assigned_to, status, start_date, end_date) VALUES (1, 'Test Task', 1, 'Pending', '2024-07-09', '2024-07-20')");
     }
 
     @Test
@@ -46,6 +49,8 @@ class TaskDAOTest {
         task.setTitle("New Task");
         task.setDescription("Description of new task");
         task.setStatus("Pending");
+        task.setStart_date(Date.valueOf("2024-07-09"));
+        task.setEnd_date(Date.valueOf("2024-07-20"));
 
         boolean result = taskDAO.createTask(task);
 
@@ -65,12 +70,15 @@ class TaskDAOTest {
     }
 
     @Test
-    void testUpdateTaskStatus() throws SQLException {
-        boolean result = taskDAO.updateTaskStatus(1, "Completed", "Finished the task");
+    void testUpdateTaskStatusAndTimeline() throws SQLException {
+        boolean result = taskDAO.updateTaskStatusAndTimeline(1, "Completed", "Finished the task", Date.valueOf("2024-07-09"), Date.valueOf("2024-07-20"));
 
         assertTrue(result);
 
         List<Task> tasks = taskDAO.getTasksByUserId(1);
         assertEquals("Completed", tasks.get(0).getStatus());
+        assertEquals("Finished the task", tasks.get(0).getDescription());
+        assertEquals(Date.valueOf("2024-07-09"), tasks.get(0).getStart_date());
+        assertEquals(Date.valueOf("2024-07-20"), tasks.get(0).getEnd_date());
     }
 }

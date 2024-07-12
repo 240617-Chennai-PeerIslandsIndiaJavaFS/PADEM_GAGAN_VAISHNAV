@@ -78,7 +78,11 @@ class TeamMemberSerTest {
     @Test
     void testUpdateTaskStatus() throws SQLException {
         TaskUpdate taskUpdate = new TaskUpdate();
-        when(taskUpdateDAO.createTaskUpdate(taskUpdate)).thenReturn(true);
+        taskUpdate.setTask_id(1);
+        taskUpdate.setStatus("Completed");
+        taskUpdate.setProgress_description("Finished the task");
+
+        when(taskUpdateDAO.createTaskUpdate(any(TaskUpdate.class))).thenReturn(true);
         when(taskDAO.updateTaskStatus(1, "Completed", "Finished the task")).thenReturn(true);
 
         boolean result = teamMemberSer.updateTaskStatus(1, "Completed", "Finished the task");

@@ -10,7 +10,7 @@ import java.util.List;
 public class TaskDAO {
     private Connection connection;
 
-    public TaskDAO() {
+    public TaskDAO() throws SQLException {
         connection = DBConn.getInstance().getConnection();
     }
 
@@ -56,6 +56,18 @@ public class TaskDAO {
         pstmt.setString(1, status);
         pstmt.setString(2, progressDescription);
         pstmt.setInt(3, taskId);
+        int affectedRows = pstmt.executeUpdate();
+        return affectedRows > 0;
+    }
+
+    public boolean updateTaskStatusAndTimeline(int taskId, String status, String progressDescription, Date startDate, Date endDate) throws SQLException {
+        String query = "UPDATE tasks SET status=?, description=?, start_date=?, end_date=? WHERE task_id=?";
+        PreparedStatement pstmt = connection.prepareStatement(query);
+        pstmt.setString(1, status);
+        pstmt.setString(2, progressDescription);
+        pstmt.setDate(3, startDate);
+        pstmt.setDate(4, endDate);
+        pstmt.setInt(5, taskId);
         int affectedRows = pstmt.executeUpdate();
         return affectedRows > 0;
     }

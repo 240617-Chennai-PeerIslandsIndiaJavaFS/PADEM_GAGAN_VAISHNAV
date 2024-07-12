@@ -10,7 +10,11 @@ public class MainPage {
 
     public MainPage() {
         this.sc = new Scanner(System.in);
-        this.user_service = new UserSer();
+        try {
+            this.user_service = new UserSer();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void homePage() throws SQLException, ClassNotFoundException {

@@ -30,7 +30,7 @@ public class AdminC {
             System.out.print("Enter Your Option : ");
             choice = sc.nextInt();
             sc.nextLine();
-            if (choice > 0 && choice < 8) {
+            if (choice > 0 && choice < 9) {
                 switch (choice) {
                     case 1:
                         registration();
@@ -66,6 +66,7 @@ public class AdminC {
 
     private void manageAccessLevels() {
         System.out.println("Managing Access Levels...");
+
     }
 
     private void viewReports() {

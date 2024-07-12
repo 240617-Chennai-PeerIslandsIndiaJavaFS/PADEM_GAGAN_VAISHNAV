@@ -8,7 +8,7 @@ import java.sql.*;
 public class UserDAO {
     private Connection connection;
 
-    public UserDAO() {
+    public UserDAO() throws SQLException {
         connection = DBConn.getInstance().getConnection();
     }
 
@@ -111,12 +111,4 @@ public class UserDAO {
         return null;
     }
 
-    public boolean resetPassword(String email, String newPassword) throws SQLException {
-        String query = "UPDATE users SET password_hash=? WHERE email=?";
-        PreparedStatement pstmt = connection.prepareStatement(query);
-        pstmt.setString(1, newPassword);
-        pstmt.setString(2, email);
-        int affectedRows = pstmt.executeUpdate();
-        return affectedRows > 0;
-    }
 }

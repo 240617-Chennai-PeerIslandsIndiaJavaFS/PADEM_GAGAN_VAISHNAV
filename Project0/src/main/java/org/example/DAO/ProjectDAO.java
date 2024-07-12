@@ -61,4 +61,13 @@ public class ProjectDAO {
         int affectedRows = pstmt.executeUpdate();
         return affectedRows > 0;
     }
+
+    public boolean removeUserFromProject(int projectId, int userId) throws SQLException {
+        String query = "DELETE FROM user_project_roles WHERE project_id = ? AND user_id = ?";
+        PreparedStatement pstmt = connection.prepareStatement(query);
+        pstmt.setInt(1, projectId);
+        pstmt.setInt(2, userId);
+        int affectedRows = pstmt.executeUpdate();
+        return affectedRows > 0;
+    }
 }

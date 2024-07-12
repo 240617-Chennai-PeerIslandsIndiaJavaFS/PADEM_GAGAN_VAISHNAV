@@ -9,6 +9,7 @@ import org.example.Models.Task;
 import org.example.Models.Milestone;
 import org.example.Models.ActivityLog;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -47,5 +48,13 @@ public class ProjectManagerSer {
 
     public boolean createActivityLog(ActivityLog log) throws SQLException {
         return activity_log_dao.createActivityLog(log);
+    }
+
+    public boolean removeUserFromProject(int projectId, int userId) throws SQLException {
+        return project_dao.removeUserFromProject(projectId, userId);
+    }
+
+    public boolean updateTaskStatusAndTimeline(int taskId, String status, String progressDescription, Date startDate, Date endDate) throws SQLException {
+        return task_dao.updateTaskStatusAndTimeline(taskId, status, progressDescription, startDate, endDate);
     }
 }

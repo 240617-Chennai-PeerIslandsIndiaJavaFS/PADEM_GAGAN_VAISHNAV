@@ -20,16 +20,16 @@ public class ProjectManagerC {
         sc = new Scanner(System.in);
     }
 
-    public void projectManager() throws SQLException {
+    public void projectManager(){
         int choice;
         while (true) {
             System.out.println("---------------------------------------------------------------------------------------------------------------------------------");
-            System.out.println("1) Reset Password  ||  2) Manage Client Info  ||  3) Add Team Members to Project  ||  4) Assign Tasks  ||  5) Create Milestone  ||  6) Create Activity Log  ||  7) Logout ");
+            System.out.println("1) Reset Password  ||  2) Manage Client Info  ||  3) Add Team Members to Project  ||  4) Assign Tasks  ||  5) Create Milestone  ||  6) Create Activity Log  ||  7) Remove Team Members from Project  ||  8) UpdateTaskStatusAndTimeLine  ||  9) Logout ");
             System.out.println("---------------------------------------------------------------------------------------------------------------------------------");
             System.out.print("Enter Your Option : ");
             choice = sc.nextInt();
-            sc.nextLine();  // Consume newline
-            if (choice > 0 && choice < 8) {
+            sc.nextLine();
+            if (choice > 0 && choice < 10) {
                 try {
                     switch (choice) {
                         case 1:
@@ -51,6 +51,12 @@ public class ProjectManagerC {
                             createActivityLog();
                             break;
                         case 7:
+                            removeTeamMembersFromProject();
+                            break;
+                        case 8:
+                            updateTaskStatusAndTimeline();
+                            break;
+                        case 9:
                             System.out.println("Logout Successful");
                             return;
                     }
@@ -124,12 +130,12 @@ public class ProjectManagerC {
         int projectId = sc.nextInt();
         System.out.print("Enter User ID: ");
         int userId = sc.nextInt();
-        sc.nextLine();  // Consume newline
+        sc.nextLine();
         System.out.print("Enter Task Title: ");
         String title = sc.nextLine();
         System.out.print("Enter Task Description: ");
         String description = sc.nextLine();
-        System.out.print("Enter Task Status (Pending, InProgress, Completed): ");
+        System.out.print("Enter Task Status (pending, in progress, completed): ");
         String status = sc.nextLine();
         System.out.print("Enter Start Date (YYYY-MM-DD): ");
         String startDateStr = sc.nextLine();
@@ -195,6 +201,43 @@ public class ProjectManagerC {
             System.out.println("Activity Log Created Successfully");
         } else {
             System.out.println("Failed to Create Activity Log");
+        }
+
+    }
+
+    private void updateTaskStatusAndTimeline() throws SQLException {
+        System.out.print("Enter Task ID: ");
+        int taskId = sc.nextInt();
+        sc.nextLine();
+        System.out.print("Enter Task Status (Pending, InProgress, Completed): ");
+        String status = sc.nextLine();
+        System.out.print("Enter Progress Description: ");
+        String progressDescription = sc.nextLine();
+        System.out.print("Enter Start Date (YYYY-MM-DD): ");
+        String startDateStr = sc.nextLine();
+        System.out.print("Enter End Date (YYYY-MM-DD): ");
+        String endDateStr = sc.nextLine();
+
+        Date startDate = Date.valueOf(startDateStr);
+        Date endDate = Date.valueOf(endDateStr);
+
+        if (project_manager_service.updateTaskStatusAndTimeline(taskId, status, progressDescription, startDate, endDate)) {
+            System.out.println("Task Status and Timeline Updated Successfully");
+        } else {
+            System.out.println("Failed to Update Task Status and Timeline");
+        }
+    }
+
+    private void removeTeamMembersFromProject() throws SQLException {
+        System.out.print("Enter Project ID: ");
+        int projectId = sc.nextInt();
+        System.out.print("Enter User ID: ");
+        int userId = sc.nextInt();
+
+        if (project_manager_service.removeUserFromProject(projectId, userId)) {
+            System.out.println("Team Member Removed Successfully");
+        } else {
+            System.out.println("Failed to Remove Team Member");
         }
     }
 }
