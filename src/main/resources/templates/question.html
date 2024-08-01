@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Question</title>
+</head>
+<body>
+<h1>Question</h1>
+<p th:text="${question.questiontext}"></p>
+<form action="/submitAnswer" method="post">
+    <textarea name="answer" rows="4" cols="50"></textarea><br>
+    <input type="hidden" name="userId" value="1" /> <!-- Example userId, replace with dynamic value -->
+    <button type="submit">Submit</button>
+</form>
+</body>
+</html>
